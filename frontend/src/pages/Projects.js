@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Layout from '../components/Layout';
 import api from '../utils/api';
+import { useAuth } from '../context/AuthContext';
 
 export default function Projects() {
   const [projects, setProjects] = useState([]);
@@ -9,6 +10,7 @@ export default function Projects() {
   const [showModal, setShowModal] = useState(false);
   const [form, setForm] = useState({ name: '', description: '' });
   const navigate = useNavigate();
+  const { user: me } = useAuth();
 
   useEffect(() => {
     api.get('/projects')
@@ -47,7 +49,7 @@ export default function Projects() {
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 8 }}>
                   <div style={{ fontSize: 16, fontWeight: 700 }}>{p.name}</div>
                   <span style={{ fontSize: 11, padding: '3px 10px', borderRadius: 20, background: 'rgba(108,99,255,0.2)', color: '#6c63ff', fontWeight: 600 }}>
-                    {p.admin._id === p.admin._id ? 'Admin' : 'Member'}
+                    {p.admin._id === me?._id ? 'Admin' : 'Member'}
                   </span>
                 </div>
                 <div style={{ fontSize: 13, color: '#888', marginBottom: 16, lineHeight: 1.5 }}>{p.description || 'No description'}</div>
